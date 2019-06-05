@@ -23,9 +23,8 @@ function startup() {
   ReactDOM.render(<App />, document.getElementById("root"));
 
   // Check if we have an active session.
-  const cookie = getCookie("session");
-  if (!cookie) {
-    navigateTo("/login");
+  if (window.location.pathname !== "/auth/newuser" && !getCookie("session")) {
+    navigateTo("/auth/login");
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { url } from "inspector";
+import { getAuthServiceUrl, getWebUrl } from "../../utils/url";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -15,6 +15,18 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: "4em"
   }
 }));
+
+function onLogin() {
+  const successUrl = getWebUrl("/auth/success");
+
+  const newuserUrl = getWebUrl("/auth/newuser");
+
+  const url = getAuthServiceUrl(
+    `/authenticate/github?success=${successUrl}&newuser=${newuserUrl}`
+  );
+
+  (window as any).location = url;
+}
 
 export default function() {
   const classes = useStyles();
@@ -34,11 +46,11 @@ export default function() {
         that you can use for anything.
       </p>
       <p>
-        From organizing birthdays to managing <br />
-        your accounts to messaging your friends.
+        From organizing parties to conducting
+        <br /> surveys to messaging your friends.
       </p>
-      <p>
-        <Button variant="outlined" className={classes.button}>
+      <p style={{ paddingTop: "2em" }}>
+        <Button variant="outlined" className={classes.button} onClick={onLogin}>
           Login with Google
         </Button>
       </p>
