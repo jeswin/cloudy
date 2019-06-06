@@ -4,7 +4,8 @@ import TextField from "@material-ui/core/TextField";
 import Fab from "@material-ui/core/Fab";
 import NavigateNext from "@material-ui/icons/NavigateNext";
 import { getAuthServiceUrl } from "../../utils/url";
-import { getCookie } from "../../utils/cookie";
+import { navigateTo } from "../../utils/routing";
+import * as cookies from "browser-cookies";
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -31,6 +32,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function() {
+  const jwt = cookies.get("jwt-auth-service-jwt");
+
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
@@ -55,8 +58,6 @@ export default function() {
 
   function selectUsername() {
     if (available) {
-      const jwt = getCookie("jwt-auth-service-token");
-      console.log("KKDD", jwt);
       if (jwt) {
         fetch(getAuthServiceUrl("/users"), {
           body: JSON.stringify({ username: values.username }),
@@ -64,13 +65,31 @@ export default function() {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            "jwt-auth-service-token": jwt
+            "jwt-auth-service-jwt": jwt
           }
         })
           .then(result =>
-            result.json().then(json => console.log("JSORES", json))
+            result
+              .json()
+              .then(
+                (json: any) => (
+                  cookies.erase("jwt-auth-service-jwt"),
+                  cookies.set(
+                    "jwt-auth-service-jwt",
+                    json["jwt-auth-service-jwt"],
+                    { domain: json["jwt-auth-service-domain"], expires: 30 }
+                  ),
+                  cookies.erase("jwt-auth-service-username"),
+                  cookies.set(
+                    "jwt-auth-service-username",
+                    json["jwt-auth-service-username"],
+                    { domain: json["jwt-auth-service-domain"], expires: 30 }
+                  ),
+                  navigateTo("/")
+                )
+              )
           )
-          .catch(ex => console.log(ex));
+          .catch((ex: any) => console.log(ex));
       }
     }
   }

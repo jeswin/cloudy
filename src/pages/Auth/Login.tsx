@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { getAuthServiceUrl, getWebUrl } from "../../utils/url";
+import * as cookies from "browser-cookies";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function onLogin() {
-  const successUrl = getWebUrl("/auth/success");
+  const successUrl = getWebUrl("/");
 
   const newuserUrl = getWebUrl("/auth/newuser");
 
@@ -29,6 +30,10 @@ function onLogin() {
 }
 
 export default function() {
+  cookies.erase("jwt-auth-service-jwt");
+  cookies.erase("jwt-auth-service-username");
+  cookies.erase("jwt-auth-service-domain");
+
   const classes = useStyles();
 
   return (
