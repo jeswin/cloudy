@@ -37,14 +37,14 @@ export default function() {
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
-    username: ""
+    userId: ""
   });
 
   const [available, setAvailability] = React.useState(false);
 
   useEffect(() => {
-    if (values.username.length) {
-      fetch(getAuthServiceUrl(`/usernames/${values.username}`)).then(result =>
+    if (values.userId.length) {
+      fetch(getAuthServiceUrl(`/user-ids/${values.userId}`)).then(result =>
         result.json().then(json => setAvailability(!json.exists))
       );
     }
@@ -56,11 +56,11 @@ export default function() {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  function selectUsername() {
+  function selectUserId() {
     if (available) {
       if (jwt) {
         fetch(getAuthServiceUrl("/users"), {
-          body: JSON.stringify({ username: values.username }),
+          body: JSON.stringify({ userId: values.userId }),
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -79,10 +79,10 @@ export default function() {
                     json["jwt-auth-service-jwt"],
                     { domain: json["jwt-auth-service-domain"], expires: 30 }
                   ),
-                  cookies.erase("jwt-auth-service-username"),
+                  cookies.erase("jwt-auth-service-user-id"),
                   cookies.set(
-                    "jwt-auth-service-username",
-                    json["jwt-auth-service-username"],
+                    "jwt-auth-service-user-id",
+                    json["jwt-auth-service-user-id"],
                     { domain: json["jwt-auth-service-domain"], expires: 30 }
                   ),
                   navigateTo("/")
@@ -112,8 +112,8 @@ export default function() {
             id="outlined-name"
             label="Username"
             className={classes.textField}
-            value={values.username}
-            onChange={handleChange("username")}
+            value={values.userId}
+            onChange={handleChange("userId")}
             margin="normal"
             variant="outlined"
           />
@@ -121,25 +121,25 @@ export default function() {
             color="primary"
             aria-label="Add"
             className={classes.fab}
-            onClick={selectUsername}
+            onClick={selectUserId}
           >
             <NavigateNext />
           </Fab>
           <br />
-          {values.username ? (
+          {values.userId ? (
             available ? (
               <span
                 className={classes.availabilityText}
                 style={{ color: "Green" }}
               >
-                {values.username} is available.
+                {values.userId} is available.
               </span>
             ) : (
               <span
                 className={classes.availabilityText}
                 style={{ color: "Red" }}
               >
-                {values.username} is taken.
+                {values.userId} is taken.
               </span>
             )
           ) : (
@@ -149,7 +149,7 @@ export default function() {
       </form>
       {/* <p className={classes.descText}>
         We'll give you a little box on the internet
-        <br /> accessible at {values.username || "username"}.toocloudy.com
+        <br /> accessible at {values.userId || "username"}.toocloudy.com
       </p> */}
     </div>
   );

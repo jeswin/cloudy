@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,6 +23,10 @@ const useStyles = makeStyles(theme => ({
 export default function ButtonAppBar() {
   const classes = useStyles();
 
+  // useEffect(() => {
+  //   fetch()
+  // }, [])
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -35,6 +40,10 @@ export default function ButtonAppBar() {
           <Button color="inherit">Logout</Button>
         </Toolbar>
       </AppBar>
+
+      <div>
+
+        </div>
     </div>
   );
 }

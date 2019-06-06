@@ -31,7 +31,7 @@ function onLogin() {
 
 export default function() {
   cookies.erase("jwt-auth-service-jwt");
-  cookies.erase("jwt-auth-service-username");
+  cookies.erase("jwt-auth-service-user-id");
   cookies.erase("jwt-auth-service-domain");
 
   const classes = useStyles();
