@@ -1,0 +1,12 @@
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
+a,
+a:visited {
+  color: #2196f3;
+}
